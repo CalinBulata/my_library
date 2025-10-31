@@ -17,15 +17,20 @@ class IsPrimeTestCase(TestCase):
         (2017, True),
         (2117, False)
     ])
-    def test_is_prime_with_positive_integer(self, number, expected_reuslt):
+    def test_is_prime_with_positive_integer(self, number, expected_result):
         actual_result = is_prime(number)
-        self.assertEqual(expected_reuslt, actual_result)
+        self.assertEqual(expected_result, actual_result)
 
     @parameterized.expand([
-        (0, False),
-        (-5, False),
-        (3.14, False),
-        ("abc", False)
+        (0,),
+        (-5,)
     ])
     def test_is_prime_with_non_positive_integer(self, number):
+        self.assertFalse(is_prime(number))
+
+    @parameterized.expand([
+        (3.14,),
+        ("abc",)
+    ])
+    def test_is_prime_with_invalid_type(self, number):
         self.assertRaises(ValueError, is_prime, number)
