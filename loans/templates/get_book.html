@@ -1,0 +1,14 @@
+{% extends "base_page.html" %}
+
+{% block title %}
+My Library | Get Book
+{% endblock %}
+
+{% block content %}
+    <h1>Book Details</h1>
+    <p>Title: {{ book.title }}</p>
+    <p>Author: {{ book.authors }}</p>
+    <p>Published: {{ book.publication_date }}</p>
+    <p>ISBN: {{ book.isbn }}</p>
+    <a href="{% url 'list_books' %}">Go to list of books</a>
+{% endblock %}
