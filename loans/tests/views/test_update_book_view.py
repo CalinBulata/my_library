@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.db import transaction
+from django.contrib import messages
 
 from loans.forms import BookForm
 from loans.models import Book
@@ -50,6 +51,9 @@ class UpdateBookTestCase(TestCase):
         self.assertEqual(self.book.publication_date, datetime.date(2025, 1, 1))
         expected_redirect_url = reverse('list_books')
         self.assertRedirects(response, expected_redirect_url, status_code = 302, target_status_code = 200)
+        message_list = list(messages.get_messages(response.wsgi_request))
+        self.assertEqual(len(message_list), 1)
+        self.assertEqual(message_list[0].level, messages.INFO)
 
     def test_post_with_invalid_data(self):
         self.form_input['authors'] = ''

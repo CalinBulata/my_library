@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.urls import reverse
 from django.core.paginator import Paginator
+from django.contrib import messages
 import random
 
 from loans.models import Book
@@ -62,10 +63,11 @@ def update_book(request, book_id):
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
             try:
-                form.save()
+                book = form.save()
             except:
                 form.add_error(None, "It was not possible to update this book in the database.")
             else:
+                messages.info(request, f"Updated book record to: {book}")
                 path = reverse('list_books')
                 return HttpResponseRedirect(path)
     else:
