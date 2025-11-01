@@ -146,6 +146,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+ITEMS_PER_PAGE = 25
+
 # Security settings
 if ENVIRONMENT == 'production':
     SECURE_HSTS_SECONDS = 3600

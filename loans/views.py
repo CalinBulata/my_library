@@ -2,10 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.urls import reverse
+from django.core.paginator import Paginator
 import random
 
 from loans.models import Book
 from loans.forms import BookForm
+
+from my_library import settings
+
+ITEMS_PER_PAGE =25
 
 def welcome(request):
     slogans = ["Having fun isn't hard when you've got a library card.",
@@ -17,7 +22,11 @@ def welcome(request):
     return render(request, 'welcome.html', context)
 
 def list_books(request):
-    context = {'books': Book.objects.all()}
+    book_list = Book.objects.all().order_by('id')
+    paginator = Paginator(book_list, settings.ITEMS_PER_PAGE)
+    page_number = request.GET.get("page")
+    page_object = paginator.get_page(page_number)
+    context = {'page_object': page_object}
     return render(request, 'books.html', context)
 
 def get_book(request, book_id):
