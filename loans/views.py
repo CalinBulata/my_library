@@ -4,6 +4,7 @@ from django.http import Http404
 from django.urls import reverse
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.views import View
 import random
 
 from loans.models import Book
@@ -37,21 +38,23 @@ def get_book(request, book_id):
         raise Http404(f"Could not find book with primary key {book_id}")
     else:
         return render(request, 'get_book.html', context)
-    
-def create_book(request):
-    if request.method == "POST":
+
+class CreateBookView(View):
+    def get(self, request):
+        form = BookForm()
+        return render(request, 'create_book.html', {'form': form})
+
+    def post(self, request):
         form = BookForm(request.POST)
         if form.is_valid():
             try:
                 form.save()
             except:
-                form.add_error(None, "It was not possible to save this book to the database.")
+                form.add_error(None, "It was not possible to save this book to the database.  Check the ISBN number.")
             else:
                 path = reverse('list_books')
                 return HttpResponseRedirect(path)
-    else:
-        form = BookForm()
-    return render(request, 'create_book.html', {'form': form})
+        return render(request, 'create_book.html', {'form': form})
 
 def update_book(request, book_id):
     try:
