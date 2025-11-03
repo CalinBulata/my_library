@@ -111,8 +111,4 @@ class BookFormTestCase(TestCase):
         form.save()
         after_count = Book.objects.count()
         self.assertEqual(before_count+1, after_count)
-
-    def test_breaking_the_tests(self):
-        self.fail("This test is made to fail!!!")
-
     
